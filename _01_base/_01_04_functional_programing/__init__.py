@@ -6,6 +6,7 @@
 # 函数名其实是一个指向函数的变量，即变量可以指向函数 : f = abs , f(-10) //output: 10
 # 要让 abs 指向 10 在其他模块也生效，要用 import builtins; builtins.abs = 10;
 # 一个函数可以接受另外一个函数作为参数，这种函数就称之为高阶函数
+import functools
 
 
 def add(x, y, f):
@@ -112,6 +113,8 @@ def diy_count():    # update2
 """
 匿名函数
 """
+# for example : list(map(lambda x: x * x ,[1, 2, 3, 4, 5, 6]
+# 此处匿名函数 lambda x: x * x 实际上就是 def f(x): \n return x * x
 
 """
 装饰器
@@ -120,7 +123,37 @@ def diy_count():    # update2
 """
 偏函数
 """
+# functools.partial的作用就是：把一个函数的某些参数给固定住（也即是设置默认值），返回一个新函数。简单调用
 
+int('12345', base=8)
+int('12345', 16)
+
+
+def int2(x, base=2):
+    return int(x, base)
+
+# 以上可以使用偏函数一步搞定
+
+
+int2 = functools.partial(int, base=2)
+
+
+# 偏函数一旦固定，在调用的时候就不能够再赋值
+
+
+def fun(a, b, c):
+    return a + b + c
+
+
+f = functools.partial(fun, b=2)
+print(f(1, c=3))
+# print(f(1, b=4, 3))  放开后有语法错误
+print(f(1, 4, 3))
+print(f(1, 3))
+
+
+# max2 = functools.partial(max, 10)
+# max2(5, 6, 7) <==> max(10, 5, 6, 7)
 
 
 
