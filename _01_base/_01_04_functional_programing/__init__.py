@@ -1,12 +1,13 @@
 # _*_ coding: utf-8 _*_
 
+import functools
+
 """
 高阶函数
 """
 # 函数名其实是一个指向函数的变量，即变量可以指向函数 : f = abs , f(-10) //output: 10
 # 要让 abs 指向 10 在其他模块也生效，要用 import builtins; builtins.abs = 10;
 # 一个函数可以接受另外一个函数作为参数，这种函数就称之为高阶函数
-import functools
 
 
 def add(x, y, f):
