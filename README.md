@@ -1,2 +1,3 @@
 # pycharm-test-project
-python 测试以及练手代码
+![](https://wtfo.gitee.io/images/timg.jpeg )
+### python 测试以及练手代码
