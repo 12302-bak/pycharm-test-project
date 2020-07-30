@@ -1,6 +1,6 @@
 # _*_ coding: utf-8 _*_
 
-import functools
+import functools, time
 
 """
 高阶函数
@@ -111,6 +111,23 @@ def diy_count():    # update2
     return fs
 
 
+def my_count():     # update 3 think of myself
+    _list = []
+    for v in range(1, 4):
+        def g(x):
+            def c():
+                return x * x
+            return c
+        _list.append(g(v))
+    return _list
+
+
+f4, f5, f6 = my_count()
+print(f4())
+print(f5())
+print(f6())
+
+
 """
 匿名函数
 """
@@ -120,6 +137,60 @@ def diy_count():    # update2
 """
 装饰器
 """
+# 增强一个函数，又不希望修改函数原先的定义，这种在代码运行期间动态增加功能的方式，称之为'装饰器'Decorator
+# 本质上，装饰器就是一个返回函数的高阶函数。
+
+
+def log(func):
+    def wrapper(*args, **kw):
+        print('包装块')
+        return func(*args, **kw)
+    return wrapper
+
+
+def text(text):
+    def log(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            print(text,'包装块')
+            return func(*args, **kw)
+        # wrapper.__name__ = func.__name__
+        return wrapper  # wrapper <==> my_wrap(args)(wrapper) <==> out_wrapper
+    return log
+
+# 使用自定义的改名装饰器
+
+
+def my_wraps(origin):
+    def decorator(inner_wrapper):
+        def out_wrapper(*args, **kw):
+            return inner_wrapper(*args, **kw)
+        out_wrapper.__name__ = origin.__name__
+        return out_wrapper
+    return decorator
+
+
+def metric(fn):
+    # @functools.wraps(fn)
+    @my_wraps(fn)
+    def wrapper(*args, **kw):
+        s = time.time()
+        rst = fn(*args, **kw)
+        e = time.time()
+        print('%s executed in %s ms' % (fn.__name__, e-s))
+        return rst
+    # wrapper.__name__ = fn.__name__
+    return wrapper  # wrapper <==> my_wrap(args)(wrapper) <==> out_wrapper
+
+
+@metric
+def test_name():
+    pass
+
+
+fx = test_name
+print(fx.__name__)
+
 
 """
 偏函数
